@@ -1,0 +1,21 @@
+@Dashagram.Api_HostAddress = https://localhost:7244
+
+###
+
+GET {{Dashagram.Api_HostAddress}}/dogs
+
+###
+
+@name=string
+GET {{Dashagram.Api_HostAddress}}/dogs/{{name}}
+
+###
+
+POST {{Dashagram.Api_HostAddress}}/dogs
+Content-Type: application/json
+
+{
+  //Dog
+}
+
+###

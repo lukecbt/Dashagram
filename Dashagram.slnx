@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Dashagram.Api/Dashagram.Api.csproj" />
+  <Project Path="Dashagram.Application/Dashagram.Application.csproj" />
+  <Project Path="Dashagram.Domain/Dashagram.Domain.csproj" />
+  <Project Path="Dashagram.Infrastructure/Dashagram.Infrastructure.csproj" />
+  <Project Path="Dashagram.Tests/Dashagram.Tests.csproj" />
+</Solution>
