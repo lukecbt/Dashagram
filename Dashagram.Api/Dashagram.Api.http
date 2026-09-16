@@ -1,21 +1,27 @@
 @Dashagram.Api_HostAddress = https://localhost:7244
+@token = BAFuRwf-lbTLY31gluzEQZKpvn20Q7d0fC0U6gjsAw
 
-###
 
-GET {{Dashagram.Api_HostAddress}}/dogs
-
-###
-
-@name=string
-GET {{Dashagram.Api_HostAddress}}/dogs/{{name}}
-
-###
 
 POST {{Dashagram.Api_HostAddress}}/dogs
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  //Dog
+  "name": "Dashita",
+  "dateOfBirth": "2026-09-16T17:28:52.946Z",
+  "breed": "string",
+  "bio": "string"
+}
+
+###
+
+POST {{Dashagram.Api_HostAddress}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "lukebeatty@gmail.com",
+  "password": "Password1!"
 }
 
 ###

@@ -3,7 +3,7 @@ using Dashagram.Application.Features.Dogs.Commands;
 using Dashagram.Application.Features.Dogs.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Dashagram.Api.Endpoints.Dogs
 {
@@ -44,13 +44,13 @@ namespace Dashagram.Api.Endpoints.Dogs
             return TypedResults.Ok(result);
         }
 
-        static async Task<Results<Created<DogDto>, BadRequest>> CreateDog(IMediator mediator, CreateDogDto dog)
+        static async Task<Results<Created<DogDto>, BadRequest>> CreateDog(IMediator mediator, ClaimsPrincipal user, CreateDogDto dog)
         {
             if (string.IsNullOrWhiteSpace(dog.Name))
             {
                 return TypedResults.BadRequest();
             }
-            DogDto dogDto = await mediator.Send(new CreateDogCommand(dog));
+            DogDto dogDto = await mediator.Send(new CreateDogCommand(dog, user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty));
             return TypedResults.Created($"/dogs", dogDto);
         }
 

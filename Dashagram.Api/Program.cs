@@ -6,23 +6,50 @@ using Dashagram.Infrastructure.Database;
 using Dashagram.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
 
 // Add application services
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
-// Add Swagger
+#region Add Swagger/OpenAPI services
+builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    // Configure Swagger documentation
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Dashagram API",
+        Description = "An ASP.NET Core Minimal API for managing dogs in the Dashagram application.",
+        Contact = new OpenApiContact
+        {
+            Name = "Luke",
+            Email = "lukebeatty96@gmail.com"
+        }
+    });
 
-// Add Identity services
-builder.Services.AddAuthorization();
+    // Add JWT authentication to Swagger
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme. (Authorization: Bearer [token])"
+    });
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference(JwtBearerDefaults.AuthenticationScheme, document)] = []
+    });
+});
+#endregion
+
+#region Add Identity services
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
@@ -30,7 +57,11 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
 .AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new()
@@ -45,6 +76,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     };
 });
 
+Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
+
+builder.Services.AddAuthorization();
+#endregion
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -52,10 +88,17 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Dashagram API v1");
+        options.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
+    });
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Register endpoints
 app.RegisterDogsEndpoints();

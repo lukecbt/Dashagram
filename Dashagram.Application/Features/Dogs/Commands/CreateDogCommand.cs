@@ -2,13 +2,10 @@
 using Dashagram.Application.Dtos.Dogs;
 using Dashagram.Domain.Models.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Dashagram.Application.Features.Dogs.Commands
 {
-    public record CreateDogCommand(CreateDogDto Dog) : IRequest<DogDto>;
+    public record CreateDogCommand(CreateDogDto Dog, string userId) : IRequest<DogDto>;
 
     public class CreateDogCommandHandler(IDogRepository repository) : IRequestHandler<CreateDogCommand, DogDto>
     {
@@ -18,8 +15,11 @@ namespace Dashagram.Application.Features.Dogs.Commands
             {
                 Name = request.Dog.Name,
                 DateOfBirth = request.Dog.DateOfBirth,
-                Bio = request.Dog.Bio
+                Bio = request.Dog.Bio,
+                OwnerId = request.userId
             }, cancellationToken);
+
+            // TODO: proper error handling
 
             return new DogDto
             {
