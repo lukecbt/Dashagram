@@ -2,6 +2,7 @@
 using Dashagram.Application.Common.Interfaces.Services;
 using Dashagram.Infrastructure.Database;
 using Dashagram.Infrastructure.Repositories;
+using Dashagram.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +20,8 @@ namespace Dashagram.Infrastructure
             services.AddScoped<IDogRepository, DogRepository>();
 
             // Add services
-            services.AddScoped<IIdentityService, Services.IdentityService>();
+            services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<ITokenService, TokenService>();
 
             return services;
         }
