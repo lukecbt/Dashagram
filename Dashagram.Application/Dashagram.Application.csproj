@@ -7,16 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Dogs\Commands\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MediatR" Version="14.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Dashagram.Domain\Dashagram.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Users\Queries\" />
   </ItemGroup>
 
 </Project>

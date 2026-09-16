@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dashagram.Infrastructure.Database
 {
-    public class AppDbContext : IdentityDbContext<AppUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Dog> Dogs { get; set; }
 
@@ -16,7 +16,7 @@ namespace Dashagram.Infrastructure.Database
             base.OnModelCreating(builder);
 
             builder.Entity<Dog>()
-                .HasOne<AppUser>()
+                .HasOne<ApplicationUser>()
                 .WithMany(u => u.Dogs)
                 .HasForeignKey(d => d.OwnerId);
         }

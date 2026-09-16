@@ -1,4 +1,4 @@
-﻿using Dashagram.Application.Common.Interfaces;
+﻿using Dashagram.Application.Common.Interfaces.Repositories;
 using Dashagram.Application.Dtos.Dogs;
 using Dashagram.Domain.Models.Entities;
 using MediatR;

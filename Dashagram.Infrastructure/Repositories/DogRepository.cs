@@ -1,11 +1,11 @@
-﻿using Dashagram.Application.Common.Interfaces;
+﻿using Dashagram.Application.Common.Interfaces.Repositories;
 using Dashagram.Domain.Models.Entities;
 using Dashagram.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dashagram.Infrastructure.Repositories
 {
-    public class DogRepository(AppDbContext context) : IDogRepository
+    public class DogRepository(ApplicationDbContext context) : IDogRepository
     {
         public async Task<Dog?> GetDogByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {

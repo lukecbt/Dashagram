@@ -1,8 +1,10 @@
+using Dashagram.Api.Endpoints.Auth;
 using Dashagram.Api.Endpoints.Dogs;
 using Dashagram.Application;
 using Dashagram.Infrastructure;
 using Dashagram.Infrastructure.Database;
 using Dashagram.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,12 +22,28 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add Identity services
-builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+builder.Services.AddAuthorization();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
 })
-.AddEntityFrameworkStores<AppDbContext>()
+.AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 
 var app = builder.Build();
 
@@ -41,5 +59,6 @@ app.UseHttpsRedirection();
 
 // Register endpoints
 app.RegisterDogsEndpoints();
+app.RegisterAuthEndpoints();
 
 app.Run();

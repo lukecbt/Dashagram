@@ -1,4 +1,5 @@
 ﻿using Dashagram.Application.Dtos.Dogs;
+using Dashagram.Application.Features.Dogs.Commands;
 using Dashagram.Application.Features.Dogs.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -20,17 +21,18 @@ namespace Dashagram.Api.Endpoints.Dogs
 
             group.MapGet("/{id}", GetDogById);
 
-            group.MapPost("/", CreateDog);
+            group.MapPost("/", CreateDog)
+                .RequireAuthorization();
 
             group.MapDelete("/{id}", DeleteDog);
         }
 
-        static async Task<Ok<IEnumerable<DogDto>>> GetAllDogs([FromServices] IMediator mediator)
+        static async Task<Ok<IEnumerable<DogDto>>> GetAllDogs(ISender mediator)
         {
             return TypedResults.Ok(await mediator.Send(new GetAllDogsQuery()));
         }
 
-        static async Task<Results<Ok<DogDto>, BadRequest, NotFound>> GetDogById([FromServices] IMediator mediator, Guid? id)
+        static async Task<Results<Ok<DogDto>, BadRequest, NotFound>> GetDogById(IMediator mediator, Guid? id)
         {
             if (id is null)
             {
@@ -42,23 +44,23 @@ namespace Dashagram.Api.Endpoints.Dogs
             return TypedResults.Ok(result);
         }
 
-        static async Task<Results<Created<DogDto>, BadRequest>> CreateDog([FromServices] IMediator mediator, CreateDogDto dog)
+        static async Task<Results<Created<DogDto>, BadRequest>> CreateDog(IMediator mediator, CreateDogDto dog)
         {
             if (string.IsNullOrWhiteSpace(dog.Name))
             {
                 return TypedResults.BadRequest();
             }
-            DogDto dogDto = await mediator.Send(new CreateDogQuery(dog));
+            DogDto dogDto = await mediator.Send(new CreateDogCommand(dog));
             return TypedResults.Created($"/dogs", dogDto);
         }
 
-        static async Task<Results<NoContent, BadRequest, NotFound>> DeleteDog([FromServices] IMediator mediator, Guid? id)
+        static async Task<Results<NoContent, BadRequest, NotFound>> DeleteDog(IMediator mediator, Guid? id)
         {
             if (id is null)
             {
                 return TypedResults.BadRequest();
             }
-            await mediator.Send(new DeleteDogQuery(id.Value));
+            await mediator.Send(new DeleteDogCommand(id.Value));
             return TypedResults.NoContent();
         }
     }

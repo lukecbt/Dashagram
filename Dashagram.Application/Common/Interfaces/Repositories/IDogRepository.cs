@@ -1,6 +1,6 @@
 ﻿using Dashagram.Domain.Models.Entities;
 
-namespace Dashagram.Application.Common.Interfaces
+namespace Dashagram.Application.Common.Interfaces.Repositories
 {
     public interface IDogRepository
     {
