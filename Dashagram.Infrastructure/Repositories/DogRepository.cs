@@ -20,7 +20,6 @@ namespace Dashagram.Infrastructure.Repositories
         public async Task<Dog> CreateDogAsync(Dog dog, CancellationToken cancellationToken = default)
         {
             context.Dogs.Add(dog);
-            await context.SaveChangesAsync(cancellationToken);
             return dog; //TODO: should we return the dog with the Id populated after saving?
         }
 
@@ -30,7 +29,6 @@ namespace Dashagram.Infrastructure.Repositories
             if (dog != null)
             {
                 context.Dogs.Remove(dog);
-                await context.SaveChangesAsync(cancellationToken);
             }
         }
     }

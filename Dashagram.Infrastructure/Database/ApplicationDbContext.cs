@@ -1,11 +1,12 @@
-﻿using Dashagram.Domain.Models.Entities;
+﻿using Dashagram.Application.Common.Interfaces.Repositories;
+using Dashagram.Domain.Models.Entities;
 using Dashagram.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dashagram.Infrastructure.Database
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 

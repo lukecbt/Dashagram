@@ -6,7 +6,7 @@ namespace Dashagram.Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            // Add MediatR
+            // Add MediatR for CQRS pattern
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
 
             return services;

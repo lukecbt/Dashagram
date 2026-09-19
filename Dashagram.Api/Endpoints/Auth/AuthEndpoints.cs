@@ -26,20 +26,20 @@ namespace Dashagram.Api.Endpoints.Auth
             return TypedResults.Created($"/auth/register", userId);
         }
 
-        static async Task<Results<Ok<string?>, BadRequest>> LoginUser(IMediator mediator, LoginUserDto user)
+        static async Task<Results<Ok<string>, BadRequest>> LoginUser(IMediator mediator, LoginUserDto user)
         {
             if (string.IsNullOrWhiteSpace(user.Email) || string.IsNullOrWhiteSpace(user.Password))
             {
                 return TypedResults.BadRequest();
             }
-            string? userId = await mediator.Send(new LoginUserCommand(user));
+            string? token = await mediator.Send(new LoginUserCommand(user));
 
-            if (userId is null)
+            if (token is null)
             {
                 return TypedResults.BadRequest();
             }
 
-            return TypedResults.Ok(userId);
+            return TypedResults.Ok(token);
         }
     }
 }

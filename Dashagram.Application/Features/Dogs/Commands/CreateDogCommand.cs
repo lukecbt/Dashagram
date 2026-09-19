@@ -7,7 +7,7 @@ namespace Dashagram.Application.Features.Dogs.Commands
 {
     public record CreateDogCommand(CreateDogDto Dog, string userId) : IRequest<DogDto>;
 
-    public class CreateDogCommandHandler(IDogRepository repository) : IRequestHandler<CreateDogCommand, DogDto>
+    public class CreateDogCommandHandler(IDogRepository repository, IApplicationDbContext context) : IRequestHandler<CreateDogCommand, DogDto>
     {
         public async Task<DogDto> Handle(CreateDogCommand request, CancellationToken cancellationToken)
         {
@@ -19,6 +19,7 @@ namespace Dashagram.Application.Features.Dogs.Commands
                 OwnerId = request.userId
             }, cancellationToken);
 
+            await context.SaveChangesAsync(cancellationToken);
             // TODO: proper error handling
 
             return new DogDto
