@@ -1,5 +1,6 @@
 using Dashagram.Api.Endpoints.Auth;
 using Dashagram.Api.Endpoints.Dogs;
+using Dashagram.Api.Handlers;
 using Dashagram.Application;
 using Dashagram.Infrastructure;
 using Dashagram.Infrastructure.Database;
@@ -13,6 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add application services
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+// Add exception handling
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<ExceptionHandler>();
 
 #region Add Swagger/OpenAPI services
 builder.Services.AddOpenApi();
