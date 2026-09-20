@@ -11,6 +11,12 @@ namespace Dashagram.Infrastructure.Database
 
         public DbSet<Dog> Dogs { get; set; }
         public DbSet<Breed> Breeds { get; set; }
+        public DbSet<Post> Posts { get; set; }
+
+        // Relationships
+        public DbSet<PostImage> PostImages { get; set; }
+        public DbSet<PostComment> PostComments { get; set; }
+        public DbSet<PostLike> PostLikes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

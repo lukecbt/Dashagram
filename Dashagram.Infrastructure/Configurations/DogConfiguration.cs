@@ -20,7 +20,7 @@ namespace Dashagram.Infrastructure.Configurations
 
             builder.HasOne<ApplicationUser>()
                 .WithMany(u => u.Dogs)
-                .HasForeignKey(d => d.OwnerId)
+                .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

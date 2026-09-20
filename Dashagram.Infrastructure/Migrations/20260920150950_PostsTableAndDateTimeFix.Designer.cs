@@ -3,6 +3,7 @@ using System;
 using Dashagram.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dashagram.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260920150950_PostsTableAndDateTimeFix")]
+    partial class PostsTableAndDateTimeFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,36 +304,7 @@ namespace Dashagram.Infrastructure.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("Dashagram.Domain.Models.Entities.PostComment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("PostComments");
-                });
-
-            modelBuilder.Entity("Dashagram.Domain.Models.Entities.PostImage", b =>
+            modelBuilder.Entity("Dashagram.Domain.Models.Entities.Relationships.PostImage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -357,31 +331,6 @@ namespace Dashagram.Infrastructure.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("PostImages");
-                });
-
-            modelBuilder.Entity("Dashagram.Domain.Models.Entities.PostLike", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("PostLikes");
                 });
 
             modelBuilder.Entity("Dashagram.Infrastructure.Identity.ApplicationUser", b =>
@@ -606,32 +555,10 @@ namespace Dashagram.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Dashagram.Domain.Models.Entities.PostComment", b =>
-                {
-                    b.HasOne("Dashagram.Domain.Models.Entities.Post", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-                });
-
-            modelBuilder.Entity("Dashagram.Domain.Models.Entities.PostImage", b =>
+            modelBuilder.Entity("Dashagram.Domain.Models.Entities.Relationships.PostImage", b =>
                 {
                     b.HasOne("Dashagram.Domain.Models.Entities.Post", "Post")
                         .WithMany("Images")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-                });
-
-            modelBuilder.Entity("Dashagram.Domain.Models.Entities.PostLike", b =>
-                {
-                    b.HasOne("Dashagram.Domain.Models.Entities.Post", "Post")
-                        .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -697,11 +624,7 @@ namespace Dashagram.Infrastructure.Migrations
 
             modelBuilder.Entity("Dashagram.Domain.Models.Entities.Post", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Images");
-
-                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("Dashagram.Infrastructure.Identity.ApplicationUser", b =>

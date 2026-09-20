@@ -27,7 +27,7 @@ namespace Dashagram.Application.Features.Dogs.Commands
                 Name = request.Dog.Name,
                 DateOfBirth = request.Dog.DateOfBirth,
                 Bio = request.Dog.Bio,
-                OwnerId = request.UserId
+                UserId = request.UserId
             }, cancellationToken);
 
             await repository.SaveChangesAsync(cancellationToken);

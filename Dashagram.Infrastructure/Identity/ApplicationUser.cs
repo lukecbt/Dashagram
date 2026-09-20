@@ -6,5 +6,6 @@ namespace Dashagram.Infrastructure.Identity
     public class ApplicationUser : IdentityUser
     {
         public ICollection<Dog> Dogs { get; set; } = [];
+        public ICollection<Post> Posts { get; set; } = [];
     }
 }

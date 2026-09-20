@@ -3,6 +3,7 @@ using System;
 using Dashagram.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dashagram.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260920150315_PostsTable")]
+    partial class PostsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,181 +52,181 @@ namespace Dashagram.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4127),
                             Name = "Labrador Retriever"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4812),
                             Name = "Golden Retriever"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4813),
                             Name = "German Shepherd"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4815),
                             Name = "French Bulldog"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4815),
                             Name = "Poodle"
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4816),
                             Name = "Bulldog"
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4817),
                             Name = "Beagle"
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4817),
                             Name = "Rottweiler"
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4818),
                             Name = "Dachshund"
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4819),
                             Name = "Yorkshire Terrier"
                         },
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4819),
                             Name = "Boxer"
                         },
                         new
                         {
                             Id = 12,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4820),
                             Name = "Siberian Husky"
                         },
                         new
                         {
                             Id = 13,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4820),
                             Name = "Australian Shepherd"
                         },
                         new
                         {
                             Id = 14,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4821),
                             Name = "Shih Tzu"
                         },
                         new
                         {
                             Id = 15,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4822),
                             Name = "Cavalier King Charles Spaniel"
                         },
                         new
                         {
                             Id = 16,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4822),
                             Name = "Doberman Pinscher"
                         },
                         new
                         {
                             Id = 17,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4823),
                             Name = "Great Dane"
                         },
                         new
                         {
                             Id = 18,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4824),
                             Name = "Miniature Schnauzer"
                         },
                         new
                         {
                             Id = 19,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4824),
                             Name = "Pembroke Welsh Corgi"
                         },
                         new
                         {
                             Id = 20,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4825),
                             Name = "Border Collie"
                         },
                         new
                         {
                             Id = 21,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4826),
                             Name = "Bernese Mountain Dog"
                         },
                         new
                         {
                             Id = 22,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4826),
                             Name = "Pomeranian"
                         },
                         new
                         {
                             Id = 23,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4827),
                             Name = "Havanese"
                         },
                         new
                         {
                             Id = 24,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4828),
                             Name = "Shetland Sheepdog"
                         },
                         new
                         {
                             Id = 25,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4828),
                             Name = "Boston Terrier"
                         },
                         new
                         {
                             Id = 26,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4829),
                             Name = "English Springer Spaniel"
                         },
                         new
                         {
                             Id = 27,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4830),
                             Name = "Maltese"
                         },
                         new
                         {
                             Id = 28,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4830),
                             Name = "Bichon Frise"
                         },
                         new
                         {
                             Id = 29,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4831),
                             Name = "Chihuahua"
                         },
                         new
                         {
                             Id = 30,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 9, 20, 15, 3, 15, 207, DateTimeKind.Utc).AddTicks(4832),
                             Name = "Cane Corso"
                         });
                 });
@@ -301,36 +304,7 @@ namespace Dashagram.Infrastructure.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("Dashagram.Domain.Models.Entities.PostComment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("PostComments");
-                });
-
-            modelBuilder.Entity("Dashagram.Domain.Models.Entities.PostImage", b =>
+            modelBuilder.Entity("Dashagram.Domain.Models.Entities.Relationships.PostImage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -357,31 +331,6 @@ namespace Dashagram.Infrastructure.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("PostImages");
-                });
-
-            modelBuilder.Entity("Dashagram.Domain.Models.Entities.PostLike", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("PostLikes");
                 });
 
             modelBuilder.Entity("Dashagram.Infrastructure.Identity.ApplicationUser", b =>
@@ -606,32 +555,10 @@ namespace Dashagram.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Dashagram.Domain.Models.Entities.PostComment", b =>
-                {
-                    b.HasOne("Dashagram.Domain.Models.Entities.Post", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-                });
-
-            modelBuilder.Entity("Dashagram.Domain.Models.Entities.PostImage", b =>
+            modelBuilder.Entity("Dashagram.Domain.Models.Entities.Relationships.PostImage", b =>
                 {
                     b.HasOne("Dashagram.Domain.Models.Entities.Post", "Post")
                         .WithMany("Images")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-                });
-
-            modelBuilder.Entity("Dashagram.Domain.Models.Entities.PostLike", b =>
-                {
-                    b.HasOne("Dashagram.Domain.Models.Entities.Post", "Post")
-                        .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -697,11 +624,7 @@ namespace Dashagram.Infrastructure.Migrations
 
             modelBuilder.Entity("Dashagram.Domain.Models.Entities.Post", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Images");
-
-                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("Dashagram.Infrastructure.Identity.ApplicationUser", b =>
