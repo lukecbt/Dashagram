@@ -1,4 +1,5 @@
-﻿using Dashagram.Application.Dtos.Dogs;
+﻿using Dashagram.Application.Common.Models;
+using Dashagram.Application.Dtos.Dogs;
 using Dashagram.Application.Features.Dogs.Commands;
 using Dashagram.Application.Features.Dogs.Queries;
 using MediatR;
@@ -27,9 +28,9 @@ namespace Dashagram.Api.Endpoints.Dogs
             group.MapDelete("/{id}", DeleteDog);
         }
 
-        static async Task<Ok<IEnumerable<DogDto>>> GetAllDogs(ISender mediator)
+        static async Task<Ok<IEnumerable<Result<DogDto>>>> GetAllDogs(ISender mediator, CancellationToken cancellationToken)
         {
-            return TypedResults.Ok(await mediator.Send(new GetAllDogsQuery()));
+            return TypedResults.Ok(await mediator.Send(new GetAllDogsQuery(), cancellationToken));
         }
 
         static async Task<Results<Ok<DogDto>, BadRequest, NotFound>> GetDogById(IMediator mediator, Guid? id)
@@ -46,10 +47,6 @@ namespace Dashagram.Api.Endpoints.Dogs
 
         static async Task<Results<Created<DogDto>, BadRequest>> CreateDog(IMediator mediator, ClaimsPrincipal user, CreateDogDto dog)
         {
-            if (string.IsNullOrWhiteSpace(dog.Name))
-            {
-                return TypedResults.BadRequest();
-            }
             DogDto dogDto = await mediator.Send(new CreateDogCommand(dog, user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty));
             return TypedResults.Created($"/dogs", dogDto);
         }

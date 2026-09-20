@@ -10,5 +10,9 @@ namespace Dashagram.Domain.Models.Entities
 
         [ForeignKey("OwnerId")]
         public string OwnerId { get; set; }
+
+        [ForeignKey("BreedId")]
+        public int BreedId { get; set; }
+        public Breed Breed { get; set; }
     }
 }

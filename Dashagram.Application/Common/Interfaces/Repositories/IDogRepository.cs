@@ -2,7 +2,7 @@
 
 namespace Dashagram.Application.Common.Interfaces.Repositories
 {
-    public interface IDogRepository
+    public interface IDogRepository : IBaseRepository
     {
         Task<Dog?> GetDogByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<IEnumerable<Dog>> GetAllDogsAsync(CancellationToken cancellationToken = default);

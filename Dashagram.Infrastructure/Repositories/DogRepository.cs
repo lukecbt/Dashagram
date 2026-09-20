@@ -31,5 +31,10 @@ namespace Dashagram.Infrastructure.Repositories
                 context.Dogs.Remove(dog);
             }
         }
+
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            return await context.SaveChangesAsync(cancellationToken);
+        }
     }
 }
