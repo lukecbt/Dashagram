@@ -1,4 +1,5 @@
-﻿using Dashagram.Application.Common.Models;
+﻿using Dashagram.Application.Common.Errors;
+using Dashagram.Application.Common.Models;
 using Dashagram.Application.Dtos.Dogs;
 using Dashagram.Application.Features.Dogs.Commands;
 using Dashagram.Application.Features.Dogs.Queries;
@@ -28,19 +29,24 @@ namespace Dashagram.Api.Endpoints.Dogs
             group.MapDelete("/{id}", DeleteDog);
         }
 
-        static async Task<Ok<IEnumerable<Result<DogDto>>>> GetAllDogs(ISender mediator, CancellationToken cancellationToken)
+        static async Task<Ok<Result<IEnumerable<DogDto>>>> GetAllDogs(ISender mediator, CancellationToken cancellationToken)
         {
             return TypedResults.Ok(await mediator.Send(new GetAllDogsQuery(), cancellationToken));
         }
 
-        static async Task<Results<Ok<DogDto>, BadRequest, NotFound>> GetDogById(IMediator mediator, Guid? id)
+        static async Task<Results<Ok<Result<DogDto?>>, BadRequest<string>, NotFound<Result<DogDto?>>>> GetDogById(IMediator mediator, Guid? id)
         {
-            if (id is null)
+            if (id is null || id == Guid.Empty)
             {
-                return TypedResults.BadRequest();
+                return TypedResults.BadRequest("Id is required.");
             }
 
             var result = await mediator.Send(new GetDogByIdQuery(id.Value));
+
+            if (result.Code == ErrorCodes.NotFound)
+            {
+                return TypedResults.NotFound(result);
+            }
 
             return TypedResults.Ok(result);
         }

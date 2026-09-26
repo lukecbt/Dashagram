@@ -6,14 +6,15 @@ using MediatR;
 
 namespace Dashagram.Application.Features.Dogs.Queries
 {
-    public record GetAllDogsQuery() : IRequest<IEnumerable<Result<DogDto>>>;
+    public record GetAllDogsQuery() : IRequest<Result<IEnumerable<DogDto>>>;
 
-    public class GetAllDogsQueryHandler(IDogRepository repository) : IRequestHandler<GetAllDogsQuery, IEnumerable<Result<DogDto>>>
+    public class GetAllDogsQueryHandler(IDogRepository repository) : IRequestHandler<GetAllDogsQuery, Result<IEnumerable<DogDto>>>
     {
-        public async Task<IEnumerable<Result<DogDto>>> Handle(GetAllDogsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<DogDto>>> Handle(GetAllDogsQuery request, CancellationToken cancellationToken)
         {
             IEnumerable<Dog> dogs = await repository.GetAllDogsAsync(cancellationToken);
-            return dogs.Select(dog => Result<DogDto>.Ok(new DogDto
+            
+            return Result<IEnumerable<DogDto>>.Ok(dogs.Select(dog => new DogDto
             {
                 Name = dog.Name,
                 DateOfBirth = dog.DateOfBirth,

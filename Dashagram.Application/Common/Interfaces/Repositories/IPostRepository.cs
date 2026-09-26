@@ -1,0 +1,13 @@
+﻿using Dashagram.Domain.Models.Entities;
+
+namespace Dashagram.Application.Common.Interfaces.Repositories
+{
+    public interface IPostRepository : IBaseRepository
+    {
+        Task<Post?> GetPostByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Post>> GetAllPostsAsync(int page, int pageSize, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Post>> GetAllPostsByUserIdAsync(string userId, CancellationToken cancellationToken = default);
+        Task<Post> CreatePostAsync(Post post, CancellationToken cancellationToken = default);
+        Task DeletePostAsync(Guid id, CancellationToken cancellationToken = default);
+    }
+}

@@ -1,4 +1,6 @@
-﻿namespace Dashagram.Application.Common.Models
+﻿using System.Net;
+
+namespace Dashagram.Application.Common.Models
 {
     /// <summary>
     /// Represents the result of an operation, including success status, data, errors, and optional metadata.
@@ -9,6 +11,7 @@
     {
         public bool Success { get; init; }
         public T? Data { get; init; }
+        public string Code { get; init; }
         public List<Error> Errors { get; init; } = [];
         public Meta? Meta { get; init; }
 
@@ -32,10 +35,11 @@
         /// <param name="errors"></param>
         /// <param name="meta"></param>
         /// <returns></returns>
-        public static Result<T> Fail(List<Error> errors, Meta? meta = null) =>
+        public static Result<T> Fail(string code, List<Error> errors, Meta? meta = null) =>
             new()
             { 
                 Success = false,
+                Code = code,
                 Errors = errors,
                 Meta = meta
             };

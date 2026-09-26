@@ -18,6 +18,7 @@ namespace Dashagram.Infrastructure
 
             // Add repositories
             services.AddScoped<IDogRepository, DogRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
 
             // Add services
             services.AddScoped<IIdentityService, IdentityService>();

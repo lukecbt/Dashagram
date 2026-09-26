@@ -1,5 +1,6 @@
 using Dashagram.Api.Endpoints.Auth;
 using Dashagram.Api.Endpoints.Dogs;
+using Dashagram.Api.Endpoints.Posts;
 using Dashagram.Api.Handlers;
 using Dashagram.Application;
 using Dashagram.Infrastructure;
@@ -109,6 +110,7 @@ app.UseAuthorization();
 
 // Register endpoints
 app.RegisterDogsEndpoints();
+app.RegisterPostsEndpoints();
 app.RegisterAuthEndpoints();
 
 app.Run();
