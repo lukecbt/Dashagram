@@ -28,6 +28,13 @@ namespace Dashagram.Api.Endpoints.Posts
             group.MapDelete("/likes/{id}", DeletePostLike)
                 .RequireAuthorization();
             group.MapPost("/{postId}/likes/count", GetPostLikeCount);
+
+            // Comments
+            group.MapPost("/{postId}/comments", CreatePostComment)
+                .RequireAuthorization();
+            group.MapDelete("/comments/{id}", DeletePostComment)
+                .RequireAuthorization();
+            group.MapGet("/{postId}/comments", GetPostComments);
         }
 
         #region Posts
@@ -88,6 +95,26 @@ namespace Dashagram.Api.Endpoints.Posts
         {
             Result<int> result = await mediator.Send(new GetPostLikeCountQuery(postId), cancellationToken);
             return TypedResults.Ok(new { count = result.Data });
+        }
+        #endregion
+
+        #region PostComments
+        static async Task<Created<Result<PostCommentDto>>> CreatePostComment(ISender mediator, ClaimsPrincipal user, Guid postId, CreatePostCommentDto dto, CancellationToken cancellationToken)
+        {
+            Result<PostCommentDto> result = await mediator.Send(new CreatePostCommentCommand(postId, dto.Content, user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty), cancellationToken);
+            return TypedResults.Created($"/posts/{postId}/comments", result);
+        }
+
+        static async Task<NoContent> DeletePostComment(ISender mediator, Guid id, CancellationToken cancellationToken)
+        {
+            await mediator.Send(new DeletePostCommentCommand(id), cancellationToken);
+            return TypedResults.NoContent();
+        }
+
+        static async Task<IResult> GetPostComments(ISender mediator, Guid postId, CancellationToken cancellationToken)
+        {
+            Result<IEnumerable<PostCommentDto>> result = await mediator.Send(new GetPostCommentsQuery(postId), cancellationToken);
+            return TypedResults.Ok(result.Data);
         }
         #endregion
     }
