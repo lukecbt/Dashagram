@@ -50,7 +50,7 @@ namespace Dashagram.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             return await context.SaveChangesAsync(cancellationToken);
         }

@@ -19,7 +19,7 @@ namespace Dashagram.Application.Features.Posts.Commands
                 Description = request.Post.Description,
                 Images = [.. request.Post.Images.Select(p => new PostImage { Url = p.Url })],
                 UserId = request.UserId
-            });
+            }, cancellationToken);
 
             await repository.SaveChangesAsync(cancellationToken);
 
