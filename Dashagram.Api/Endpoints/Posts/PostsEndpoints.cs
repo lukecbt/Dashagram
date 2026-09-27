@@ -27,9 +27,9 @@ namespace Dashagram.Api.Endpoints.Posts
             return TypedResults.Ok(await mediator.Send(new GetAllPostsQuery(page, size), cancellationToken));
         }
 
-        static async Task<Ok<Result<IEnumerable<PostDto>>>> GetPostsByUserId(ISender mediator, string userId, CancellationToken cancellationToken)
+        static async Task<Ok<Result<IEnumerable<PostDto>>>> GetPostsByUserId(ISender mediator, string userId, int? page, int? size, CancellationToken cancellationToken)
         {
-            return TypedResults.Ok(await mediator.Send(new GetAllPostsByUserIdQuery(userId), cancellationToken));
+            return TypedResults.Ok(await mediator.Send(new GetAllPostsByUserIdQuery(userId, page, size), cancellationToken));
         }
 
         static async Task<Results<Ok<Result<PostDto?>>, BadRequest<string>, NotFound<Result<PostDto?>>>> GetPostById(ISender mediator, Guid? id, CancellationToken cancellationToken)

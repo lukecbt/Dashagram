@@ -32,7 +32,8 @@ namespace Dashagram.Application.Features.Posts.Queries
                 Id = post.Id,
                 Title = post.Title,
                 Description = post.Description,
-                UserId = post.UserId
+                UserId = post.UserId,
+                Images = [.. post.Images?.Select(i => new PostImageDto(i.Url)) ?? []]
             });
         }
     }
