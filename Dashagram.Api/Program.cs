@@ -7,7 +7,9 @@ using Dashagram.Infrastructure;
 using Dashagram.Infrastructure.Database;
 using Dashagram.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -85,6 +87,14 @@ builder.Services.AddAuthentication(options =>
 Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
 
 builder.Services.AddAuthorization();
+
+// Add health checks
+builder.Services.AddHealthChecks()
+    .AddCheck(
+        name: "self-live",
+        check: () => HealthCheckResult.Healthy("Application is healthy"),
+        tags: ["live"]
+    );
 #endregion
 
 var app = builder.Build();
@@ -102,6 +112,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseExceptionHandler();
+
+app.UseHealthChecks("/health", new HealthCheckOptions
+{
+    AllowCachingResponses = false,
+    Predicate = p => p.Tags.Contains("live")
+});
 
 app.UseHttpsRedirection();
 

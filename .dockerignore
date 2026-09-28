@@ -1,0 +1,12 @@
+**/.git
+**/.vs
+**/.vscode
+**/*.*proj.user
+**/bin
+**/obj
+**/out
+**/TestResults
+**/.env
+**/publish
+**/*.md
+Dashagram.Tests/
