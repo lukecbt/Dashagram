@@ -130,3 +130,5 @@ app.RegisterPostsEndpoints();
 app.RegisterAuthEndpoints();
 
 app.Run();
+
+public partial class Program { }
