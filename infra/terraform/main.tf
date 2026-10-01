@@ -22,9 +22,9 @@ terraform {
 provider "neon" {}
 
 resource "neon_project" "this" {
-  name      = "dashagram"
-  region_id = "aws-eu-central-1"
-  org_id    = var.neon_org_id
+  name                      = "dashagram"
+  region_id                 = "aws-eu-central-1"
+  org_id                    = var.neon_org_id
   history_retention_seconds = 21600
 
   lifecycle {
