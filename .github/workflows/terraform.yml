@@ -4,7 +4,7 @@ on:
   # When a PR changes anything in infra/ (or this workflow), run the checks and a plan only.
   pull_request:
     paths:
-      - "infra/**"
+      - "infra/terraform/**"
       - ".github/workflows/terraform.yml"
 
   # When merged to main, apply it.
