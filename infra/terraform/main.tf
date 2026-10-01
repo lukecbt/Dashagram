@@ -1,5 +1,15 @@
 terraform {
   required_version = ">= 1.6"
+
+  # Configure the backend to use Terraform Cloud for state management
+  cloud {
+    organization = "longdog-labs"
+
+    workspaces {
+      name = "dashagram"
+    }
+  }
+
   required_providers {
     neon = {
       source  = "kislerdm/neon"
@@ -8,6 +18,7 @@ terraform {
   }
 }
 
+# Database project for Dashagram. This is a managed Postgres database hosted on Neon.
 provider "neon" {}
 
 resource "neon_project" "this" {
