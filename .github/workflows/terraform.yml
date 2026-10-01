@@ -11,7 +11,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - "infra/**"
+      - "infra/terraform/**"
       - ".github/workflows/terraform.yml"
 
   # Adds a maunal "Run workflow" button in the Actions tab.
