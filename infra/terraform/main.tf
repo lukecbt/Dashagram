@@ -26,4 +26,8 @@ resource "neon_project" "this" {
   region_id = "aws-eu-central-1"
   org_id    = var.neon_org_id
   history_retention_seconds = 21600
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }

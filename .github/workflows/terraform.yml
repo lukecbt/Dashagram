@@ -1,0 +1,86 @@
+name: Terraform
+
+on:
+  # When a PR changes anything in infra/ (or this workflow), run the checks and a plan only.
+  pull_request:
+    paths:
+      - "infra/**"
+      - ".github/workflows/terraform.yml"
+
+  # When merged to main, apply it.
+  push:
+    branches: [ "main" ]
+    paths:
+      - "infra/**"
+      - ".github/workflows/terraform.yml"
+
+  # Adds a maunal "Run workflow" button in the Actions tab.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Ensure that only one run of this workflow is in progress at a time. This prevents multiple runs from trying to apply the same Terraform state at the same time.
+concurrency:
+  group: terraform
+  cancel-in-progress: false
+
+# Setup environment variables for run.
+env:
+  TF_IN_AUTOMATION: "true"
+  NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+  TF_VAR_neon_org_id: ${{ secrets.NEON_ORG_ID }}
+
+defaults:
+  run:
+    working-directory: infra/terraform
+
+# Split the workflow into multiple jobs.
+jobs:
+  # Checks and a plan, with no changes made. Runs on PRs and manual runs.
+  plan:
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: hashicorp/setup-terraform@v3
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # Fails if the .tf files aren't formatted.
+    - name: Format check
+      run: terraform fmt -check -recursive
+
+    # Download the Neon provider and connect to the remote state.
+    - name: Init
+      run: terraform init -input=false
+
+    # Checks the configuration is valid (syntax, references, types).
+    - name: Validate
+      run: terraform validate
+
+    # Shows what Terraform in log prior to merge.
+    - name: Plan
+      run: terraform plan -input=false
+
+  # Makes the changes. Runs only after a merge to main.
+  apply:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    environment: production
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: hashicorp/setup-terraform@v3
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Init
+      run: terraform init -input=false
+
+    - name: Apply
+      run: terraform apply -auto-approve -input=false
