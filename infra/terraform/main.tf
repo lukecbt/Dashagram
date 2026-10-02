@@ -15,11 +15,18 @@ terraform {
       source  = "kislerdm/neon"
       version = "~> 0.15"
     }
+    render = {
+      source = "render-oss/render"
+      version = "~> 1.9"
+    }
   }
 }
 
 # Database project for Dashagram. This is a managed Postgres database hosted on Neon.
 provider "neon" {}
+
+# Render project for Dashagram. This is a managed application hosted on Render.
+provider "render" {}
 
 resource "neon_project" "this" {
   name                      = "dashagram"
