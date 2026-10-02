@@ -9,8 +9,8 @@ resource "render_web_service" "api" {
     docker = {
       repo_url        = "https://github.com/lukecbt/Dashagram"
       branch          = "main"
-      dockerfile_path = "./src/Dashagram/Dashagram.Api/Dockerfile"
-      context         = "./src"
+      dockerfile_path = "./src/Dashagram.Api/Dockerfile"
+      context         = "."
 
       auto_deploy_trigger = "checksPass"
 
