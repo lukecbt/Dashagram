@@ -28,8 +28,13 @@ concurrency:
 # Setup environment variables for run.
 env:
   TF_IN_AUTOMATION: "true"
+  # For infra
   NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+  RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+  RENDER_OWNER_ID: ${{ secrets.RENDER_OWNER_ID }}
   TF_VAR_neon_org_id: ${{ secrets.NEON_ORG_ID }}
+  # For application
+  TF_VAR_jwt_key: ${{ secrets.JWT_KEY }}
 
 defaults:
   run:
