@@ -9,6 +9,6 @@ locals {
 }
 
 output "npgsql_connection_string" {
-  value = local.npgsql_connection_string
+  value     = local.npgsql_connection_string
   sensitive = true
 }
