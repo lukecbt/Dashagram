@@ -74,8 +74,7 @@ jobs:
           migrations.sql
         retention-days: 30
 
-  # ---------------------------------------------------------------------------
-  # MIGRATE: applies migrations to the production database. Only on merge to main.
+  # Applies migrations to the production database. Only on merge to main.
   migrate:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -93,19 +92,17 @@ jobs:
       with:
         name: migrations
 
-    # Writes the SQL into the run summary page, so each release shows what schema changes were applied.
-    - name: Record migration script
-      run: |
-        {
-          echo '### Migration script applied'
-          echo '```sql'
-          cat migrations.sql
-          echo '```'
-        } >> "$GITHUB_STEP_SUMMARY"
-
+    # Apply migrations and log the changes.   
     - name: Apply migrations
+      shell: bash
       env:
         DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
       run: |
         chmod +x ./efbundle
-        ./efbundle --connection "$DB_CONNECTION_STRING"
+        ./efbundle --connection "$DB_CONNECTION_STRING" | tee migrate.log
+        {
+          echo '### Migration result'
+          echo '```'
+          cat migrate.log
+          echo '```'
+        } >> "$GITHUB_STEP_SUMMARY"
