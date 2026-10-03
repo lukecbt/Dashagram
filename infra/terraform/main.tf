@@ -19,14 +19,23 @@ terraform {
       source  = "render-oss/render"
       version = "~> 1.9"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5.0"
+    }
   }
 }
 
-# Database project for Dashagram. This is a managed Postgres database hosted on Neon.
+# Database provider for Dashagram. This is a managed Postgres database hosted on Neon.
 provider "neon" {}
 
-# Render project for Dashagram. This is a managed application hosted on Render.
+# Render provider for Dashagram. This is a managed application hosted on Render.
 provider "render" {}
+
+# Cloudflare provider for Dashagram. This is used for image and object storage.
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
+}
 
 resource "neon_project" "this" {
   name                      = "dashagram"

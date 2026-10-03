@@ -31,6 +31,24 @@ resource "render_web_service" "api" {
     Jwt__Key = {
       value = var.jwt_key
     }
+    S3__ServiceUrl = {
+      value = "https://${var.cloudflare_account_id}.r2.cloudflarestorage.com"
+    }
+    S3__Region = {
+      value = "auto"
+    }
+    S3__AccessKeyId = {
+      value = var.s3_access_key_id
+    }
+    S3__SecretAccessKey = {
+      value = var.s3_secret_access_key
+    }
+    S3__BucketName = {
+      value = cloudflare_r2_bucket.uploads.name
+    }
+    S3__ForcePathStyle = {
+      value = "true"
+    }
   }
 
   lifecycle {
