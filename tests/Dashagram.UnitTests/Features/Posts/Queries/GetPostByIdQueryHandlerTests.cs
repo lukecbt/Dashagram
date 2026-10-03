@@ -14,7 +14,6 @@ public class GetPostByIdQueryHandlerTests
         var postId = Guid.NewGuid();
         var post = new Post
         {
-            Title = "A day at the park",
             Description = "Playing fetch",
             UserId = "user-123",
             Images = [new PostImage { Url = "https://example.com/dog.jpg" }],
@@ -32,7 +31,6 @@ public class GetPostByIdQueryHandlerTests
 
         result.Success.Should().BeTrue();
         result.Data.Should().NotBeNull();
-        result.Data!.Title.Should().Be(post.Title);
         result.Data.Description.Should().Be(post.Description);
         result.Data.UserId.Should().Be(post.UserId);
         result.Data.Images.Should().ContainSingle()

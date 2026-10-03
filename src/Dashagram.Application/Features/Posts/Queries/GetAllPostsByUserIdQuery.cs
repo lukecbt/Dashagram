@@ -34,7 +34,6 @@ namespace Dashagram.Application.Features.Posts.Queries
             return Result<IEnumerable<PostDto>>.Ok(posts.Select(post => new PostDto
             {
                 Id = post.Id,
-                Title = post.Title,
                 Description = post.Description,
                 UserId = post.UserId,
                 Images = [.. post.Images?.Select(i => new PostImageDto(i.Url)) ?? []]

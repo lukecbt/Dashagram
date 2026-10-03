@@ -15,7 +15,6 @@ namespace Dashagram.Application.Features.Posts.Commands
         {
             Post post = await repository.CreatePostAsync(new Post
             {
-                Title = request.Post.Title,
                 Description = request.Post.Description,
                 Images = [.. request.Post.Images.Select(p => new PostImage { Url = p.Url })],
                 UserId = request.UserId
@@ -26,7 +25,6 @@ namespace Dashagram.Application.Features.Posts.Commands
             return Result<PostDto>.Ok(new PostDto
             {
                 Id = post.Id,
-                Title = post.Title,
                 Description = post.Description,
                 UserId = post.UserId,
                 Images = [.. post.Images?.Select(i => new PostImageDto(i.Url)) ?? []]
