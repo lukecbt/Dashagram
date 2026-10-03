@@ -12,7 +12,8 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Don't cancel a run on main, since it may be in the middle of a migration.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   SOLUTION: src/Dashagram.slnx
@@ -24,15 +25,87 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 10.0.x
+
     - name: Restore dependencies
       run: dotnet restore $SOLUTION
+
     - name: Build
       run: dotnet build $SOLUTION --no-restore --configuration Release
+
     - name: Test
       run: dotnet test $SOLUTION --no-build --configuration Release --verbosity normal
+
     - name: Build Docker image
       run: docker build -f src/Dashagram.Api/Dockerfile -t dashagram:ci src
+
+    - name: Install EF tooling
+      run: dotnet tool install --global dotnet-ef
+
+      # Build the migration bundle, which is a self-contained executable that can be run on the production server to apply the migrations.
+    - name: Build migration bundle
+      run: >
+        dotnet ef migrations bundle
+        --project src/Dashagram.Infrastructure
+        --startup-project src/Dashagram.Api
+        --configuration Release
+        --self-contained -r linux-x64
+        --output efbundle --force
+
+    # A plain SQL version of the same migrations, kept as a human-readable record of each release.
+    - name: Generate idempotent migration script
+      run: >
+        dotnet ef migrations script --idempotent
+        --project src/Dashagram.Infrastructure
+        --startup-project src/Dashagram.Api
+        --configuration Release
+        --output migrations.sql
+
+    # Hand both files to the migrate job. Artifacts are kept for 30 days for traceability.
+    - uses: actions/upload-artifact@v4
+      with:
+        name: migrations
+        path: |
+          efbundle
+          migrations.sql
+        retention-days: 30
+
+  # ---------------------------------------------------------------------------
+  # MIGRATE: applies migrations to the production database. Only on merge to main.
+  migrate:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    # The "production" environment is where deployment protections are configured (branch rules, reviewers).
+    environment: production
+    timeout-minutes: 10
+    # Never let two migrations run at once, and never cancel one halfway through.
+    concurrency:
+      group: production-migrate
+      cancel-in-progress: false
+    steps:
+    # Fetch the exact bundle and SQL script that the build job produced and tested.
+    - uses: actions/download-artifact@v4
+      with:
+        name: migrations
+
+    # Writes the SQL into the run summary page, so each release shows what schema changes were applied.
+    - name: Record migration script
+      run: |
+        {
+          echo '### Migration script applied'
+          echo '```sql'
+          cat migrations.sql
+          echo '```'
+        } >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Apply migrations
+      env:
+        DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+      run: |
+        chmod +x ./efbundle
+        ./efbundle --connection "$DB_CONNECTION_STRING"
