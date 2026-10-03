@@ -26,7 +26,7 @@ resource "render_web_service" "api" {
       value = "8080"
     }
     ConnectionStrings__DefaultConnection = {
-      value = local.npgsql_connection_string
+      value = var.db_connection_string
     }
     Jwt__Key = {
       value = var.jwt_key

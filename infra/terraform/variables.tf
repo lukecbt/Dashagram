@@ -8,3 +8,9 @@ variable "jwt_key" {
   description = "JWT key used for signing and verifying JWT tokens"
   sensitive   = true
 }
+
+variable "db_connection_string" {
+  type        = string
+  description = "PostgreSQL connection string used by the API service"
+  sensitive   = true
+}
