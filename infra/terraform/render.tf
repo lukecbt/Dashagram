@@ -49,6 +49,9 @@ resource "render_web_service" "api" {
     S3__ForcePathStyle = {
       value = "true"
     }
+    S3__PublicBaseUrl = {
+      value = var.s3_public_base_url
+    }
   }
 
   lifecycle {

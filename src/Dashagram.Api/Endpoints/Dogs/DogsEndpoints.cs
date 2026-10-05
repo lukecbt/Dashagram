@@ -1,5 +1,5 @@
 ﻿using Dashagram.Application.Common.Errors;
-using Dashagram.Application.Common.Models;
+using Dashagram.Application.Common.Models.Response;
 using Dashagram.Application.Dtos.Dogs;
 using Dashagram.Application.Features.Dogs.Commands;
 using Dashagram.Application.Features.Dogs.Queries;

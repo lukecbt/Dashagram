@@ -1,5 +1,5 @@
 ﻿using Dashagram.Application.Common.Interfaces.Repositories;
-using Dashagram.Application.Common.Models;
+using Dashagram.Application.Common.Models.Response;
 using MediatR;
 
 namespace Dashagram.Application.Features.Posts.Queries

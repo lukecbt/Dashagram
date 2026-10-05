@@ -2,11 +2,8 @@
 {
     public class PostImageDto
     {
-        public PostImageDto(string url)
-        {
-            Url = url;
-        }
-
+        public Guid Id { get; set; }
+        public string Key { get; set; }
         public string Url { get; set; }
     }
 }
