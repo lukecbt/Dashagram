@@ -1,10 +1,12 @@
 ﻿using Dashagram.Application.Common.Errors;
-using Dashagram.Application.Common.Models;
+using Dashagram.Application.Common.Models.Response;
+using Dashagram.Application.Common.Models.Storage;
 using Dashagram.Application.DTOs.Posts;
 using Dashagram.Application.Features.Posts.Commands;
 using Dashagram.Application.Features.Posts.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace Dashagram.Api.Endpoints.Posts
@@ -21,6 +23,13 @@ namespace Dashagram.Api.Endpoints.Posts
                 .RequireAuthorization();
             group.MapDelete("/{id}", DeletePost)
                 .RequireAuthorization();
+            group.MapPost("/upload", async (IFormFileCollection files) =>
+            {
+                foreach (var f in files)
+                    Console.WriteLine($"{f.Name}: {f.FileName} {f.ContentType} {f.Length} bytes");
+
+                return Results.Ok(new { fields = files.Count, files = files.Count });
+            });
 
             // Likes
             group.MapPost("/{postId}/likes", CreatePostLike)
@@ -65,9 +74,12 @@ namespace Dashagram.Api.Endpoints.Posts
             return TypedResults.Ok(result);
         }
 
-        static async Task<Results<Created<Result<PostDto>>, BadRequest>> CreatePost(ISender mediator, ClaimsPrincipal user, CreatePostDto post, CancellationToken cancellationToken)
+        static async Task<Results<Created<Result<PostDto>>, BadRequest>> CreatePost(ISender mediator, ClaimsPrincipal user, [FromForm] CreatePostDto post, IFormFileCollection files, CancellationToken cancellationToken)
         {
-            var result = await mediator.Send(new CreatePostCommand(post, user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty), cancellationToken);
+            // Convert files input to image upload objects before making request
+            var images = files.Select(f => new ImageUpload(f.OpenReadStream(), f.ContentType, f.Length)).ToList();
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+            var result = await mediator.Send(new CreatePostCommand(post, userId, images), cancellationToken);
             return TypedResults.Created($"/posts", result);
         }
 

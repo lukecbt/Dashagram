@@ -1,5 +1,6 @@
 ﻿using Dashagram.Application.Common.Interfaces.Repositories;
-using Dashagram.Application.Common.Models;
+using Dashagram.Application.Common.Interfaces.Services;
+using Dashagram.Application.Common.Models.Response;
 using Dashagram.Application.DTOs.Posts;
 using Dashagram.Domain.Models.Entities;
 using MediatR;
@@ -8,7 +9,7 @@ namespace Dashagram.Application.Features.Posts.Queries
 {
     public record GetAllPostsQuery(int? Page, int? Size) : IRequest<Result<IEnumerable<PostDto>>>;
 
-    public class GetAllPostsQueryHandler(IPostRepository repository) : IRequestHandler<GetAllPostsQuery, Result<IEnumerable<PostDto>>>
+    public class GetAllPostsQueryHandler(IPostRepository repository, IStorageService storage) : IRequestHandler<GetAllPostsQuery, Result<IEnumerable<PostDto>>>
     {
         public async Task<Result<IEnumerable<PostDto>>> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
         {
@@ -36,7 +37,11 @@ namespace Dashagram.Application.Features.Posts.Queries
                 Id = post.Id,
                 Description = post.Description,
                 UserId = post.UserId,
-                Images = [.. post.Images?.Select(i => new PostImageDto(i.Url)) ?? []],
+                Images = [.. post.Images?.Select(i => new PostImageDto {
+                    Id = i.Id,
+                    Key = i.Key,
+                    Url = storage.GetPublicUrl(i.Key)
+                }) ?? []],
             }), meta);
         }
     }

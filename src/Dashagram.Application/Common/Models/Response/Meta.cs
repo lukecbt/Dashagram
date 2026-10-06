@@ -1,4 +1,4 @@
-﻿namespace Dashagram.Application.Common.Models
+﻿namespace Dashagram.Application.Common.Models.Response
 {
     public record Meta
     {

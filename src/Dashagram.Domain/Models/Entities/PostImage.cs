@@ -5,7 +5,7 @@
     /// </summary>
     public record PostImage : Entity
     {
-        public string Url { get; set; }
+        public string Key { get; set; }
         public int Order { get; set; }
 
         public Guid PostId { get; set; }

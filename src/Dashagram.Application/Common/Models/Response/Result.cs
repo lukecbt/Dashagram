@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Dashagram.Application.Common.Models
+namespace Dashagram.Application.Common.Models.Response
 {
     /// <summary>
     /// Represents the result of an operation, including success status, data, errors, and optional metadata.

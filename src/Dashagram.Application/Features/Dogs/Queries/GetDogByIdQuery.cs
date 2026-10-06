@@ -1,7 +1,7 @@
 ﻿using Dashagram.Application.Common.Errors;
 using Dashagram.Application.Common.Helpers;
 using Dashagram.Application.Common.Interfaces.Repositories;
-using Dashagram.Application.Common.Models;
+using Dashagram.Application.Common.Models.Response;
 using Dashagram.Application.Dtos.Dogs;
 using Dashagram.Domain.Models.Entities;
 using MediatR;

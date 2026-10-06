@@ -2,22 +2,20 @@
 using Dashagram.Domain.Models.Entities;
 using Dashagram.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Dashagram.Infrastructure.Repositories
 {
     public class PostRepository(ApplicationDbContext context) : IPostRepository
     {
+        #region Posts
         public async Task<Post> CreatePostAsync(Post post, CancellationToken cancellationToken = default)
         {
             await context.Posts.AddAsync(post, cancellationToken);
             return post;
         }
 
-        public async Task DeletePostAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task DeletePostAsync(Post post, CancellationToken cancellationToken = default)
         {
-            Post? post = await context.Posts.FindAsync([id], cancellationToken);
-            if (post == null) return;
             context.Posts.Remove(post);
             return;
         }
@@ -49,6 +47,16 @@ namespace Dashagram.Infrastructure.Repositories
                 .Include(p => p.Images)
                 .ToListAsync(cancellationToken);
         }
+        #endregion
+
+        #region Post Images
+        public async Task<IEnumerable<PostImage>> GetAllPostImagesByPostId(Guid postId, CancellationToken cancellationToken = default)
+        {
+            return await context.PostImages
+                .Where(pi => pi.PostId == postId)
+                .ToListAsync(cancellationToken);
+        }
+        #endregion
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

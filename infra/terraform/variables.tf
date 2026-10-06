@@ -40,3 +40,8 @@ variable "s3_secret_access_key" {
   description = "S3 secret access key used for connecting to the R2 bucket"
   sensitive   = true
 }
+
+variable "s3_public_base_url" {
+  type        = string
+  description = "Public base URL used for generating public URLs for uploaded files"
+}

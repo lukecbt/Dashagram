@@ -1,3 +1,4 @@
+using Dashagram.Api.Endpoints.Antiforgery;
 using Dashagram.Api.Endpoints.Auth;
 using Dashagram.Api.Endpoints.Dogs;
 using Dashagram.Api.Endpoints.Posts;
@@ -97,6 +98,9 @@ builder.Services.AddHealthChecks()
     );
 #endregion
 
+// Antiforgery protection for image uploads
+builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -121,13 +125,17 @@ app.UseHealthChecks("/health", new HealthCheckOptions
 
 app.UseHttpsRedirection();
 
+// Authentication and antiforgery
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseAntiforgery();
 
-// Register endpoints
+#region Register Endpoints
 app.RegisterDogsEndpoints();
 app.RegisterPostsEndpoints();
 app.RegisterAuthEndpoints();
+app.RegisterAntiforgeryEndpoints();
+#endregion
 
 app.Run();
 

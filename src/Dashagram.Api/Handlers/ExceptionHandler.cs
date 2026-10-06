@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Dashagram.Application.Common.Errors.Exceptions;
+using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,11 +53,11 @@ namespace Dashagram.Api.Handlers
                     problemDetails.Detail = details;
                     problemDetails.Extensions["errors"] = errors;
                     break;
-                case ArgumentNullException argumentNullException:
-                    // TODO: boilerplate for other exception types, e.g., NotFoundException, UnauthorizedAccessException, etc.
-                    statusCode = StatusCodes.Status400BadRequest;
-                    title = "Bad Request";
-                    details = argumentNullException.Message;
+                // Thown when an upload storage error occurs during image upload
+                case StorageException storageException:
+                    statusCode = StatusCodes.Status503ServiceUnavailable;
+                    title = "Service Unavailable";
+                    details = "There was an error uploading your image(s).";
                     problemDetails.Status = statusCode;
                     problemDetails.Title = title;
                     problemDetails.Detail = details;

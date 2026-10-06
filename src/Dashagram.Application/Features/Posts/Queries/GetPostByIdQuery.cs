@@ -1,7 +1,8 @@
 ﻿using Dashagram.Application.Common.Errors;
 using Dashagram.Application.Common.Helpers;
 using Dashagram.Application.Common.Interfaces.Repositories;
-using Dashagram.Application.Common.Models;
+using Dashagram.Application.Common.Interfaces.Services;
+using Dashagram.Application.Common.Models.Response;
 using Dashagram.Application.DTOs.Posts;
 using Dashagram.Domain.Models.Entities;
 using MediatR;
@@ -10,9 +11,9 @@ namespace Dashagram.Application.Features.Posts.Queries
 {
     public record GetPostByIdQuery(Guid Id) : IRequest<Result<PostDto?>>;
 
-    public class GetPostByIdQueryHandler(IPostRepository repository) : IRequestHandler<GetPostByIdQuery, Result<PostDto?>>
+    public class GetPostByIdQueryHandler(IPostRepository repository, IStorageService storage) : IRequestHandler<GetPostByIdQuery, Result<PostDto?>>
     {
-        public async Task<Result<PostDto?>> Handle (GetPostByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<PostDto?>> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
         {
             Post? post = await repository.GetPostByIdAsync(request.Id, cancellationToken);
 
@@ -32,7 +33,11 @@ namespace Dashagram.Application.Features.Posts.Queries
                 Id = post.Id,
                 Description = post.Description,
                 UserId = post.UserId,
-                Images = [.. post.Images?.Select(i => new PostImageDto(i.Url)) ?? []]
+                Images = [.. post.Images?.Select(i => new PostImageDto {
+                    Id = i.Id,
+                    Key = i.Key,
+                    Url = storage.GetPublicUrl(i.Key)
+                }) ?? []]
             });
         }
     }
