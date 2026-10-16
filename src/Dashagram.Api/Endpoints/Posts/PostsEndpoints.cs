@@ -20,16 +20,10 @@ namespace Dashagram.Api.Endpoints.Posts
             group.MapGet("/user/{userId}", GetPostsByUserId);
             group.MapGet("/{id}", GetPostById);
             group.MapPost("/", CreatePost)
-                .RequireAuthorization();
+                .RequireAuthorization()
+                .DisableAntiforgery();
             group.MapDelete("/{id}", DeletePost)
                 .RequireAuthorization();
-            group.MapPost("/upload", async (IFormFileCollection files) =>
-            {
-                foreach (var f in files)
-                    Console.WriteLine($"{f.Name}: {f.FileName} {f.ContentType} {f.Length} bytes");
-
-                return Results.Ok(new { fields = files.Count, files = files.Count });
-            });
 
             // Likes
             group.MapPost("/{postId}/likes", CreatePostLike)
